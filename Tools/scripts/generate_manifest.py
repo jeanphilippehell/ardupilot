@@ -42,6 +42,7 @@ brand_map = {
     'CUAV-X7-bdshot' : ('CUAV X7', 'CUAV'),
     'DrotekP3Pro' : ('Pixhawk 3 Pro', 'Drotek'),
     'MambaF405v2' : ('Diatone Mamba F405 MK2', 'Diatone'),
+    'MambaF405' : ('Diatone Mamba F405', 'Diatone'),
     'MatekF405' : ('Matek F405', 'Matek'),
     'MatekF405-bdshot' : ('Matek F405', 'Matek'),
     'MatekF405-STD' : ('Matek F405 STD', 'Matek'),
