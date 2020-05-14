@@ -267,7 +267,9 @@ void AP_Baro::calibrate(bool save)
     if (num_calibrated) {
         return;
     }
+#if !defined(HAL_BARO_ALLOW_INIT_NO_BARO)
     AP_BoardConfig::sensor_config_error("AP_Baro: all sensors uncalibrated");
+#endif
 }
 
 /*
@@ -400,7 +402,7 @@ float AP_Baro::get_external_temperature(const uint8_t instance) const
     if (_last_external_temperature_ms != 0 && AP_HAL::millis() - _last_external_temperature_ms < 10000) {
         return _external_temperature;
     }
-    
+
 #ifndef HAL_BUILD_AP_PERIPH
     // if we don't have an external temperature then try to use temperature
     // from the airspeed sensor
@@ -412,7 +414,7 @@ float AP_Baro::get_external_temperature(const uint8_t instance) const
         }
     }
 #endif
-    
+
     // if we don't have an external temperature and airspeed temperature
     // then use the minimum of the barometer temperature and 35 degrees C.
     // The reason for not just using the baro temperature is it tends to read high,

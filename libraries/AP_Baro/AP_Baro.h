@@ -50,7 +50,11 @@ public:
 
     // healthy - returns true if sensor and derived altitude are good
     bool healthy(void) const { return healthy(_primary); }
+#if defined(HAL_BARO_ALLOW_INIT_NO_BARO)
+    bool healthy(uint8_t instance) const { return (instance == _primary); }
+#else
     bool healthy(uint8_t instance) const { return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated; }
+#endif
 
     // check if all baros are healthy - used for SYS_STATUS report
     bool all_healthy(void) const;
@@ -66,7 +70,7 @@ public:
     // get pressure correction in Pascal. Divide by 100 for millibars or hectopascals
     float get_pressure_correction(void) const { return get_pressure_correction(_primary); }
     float get_pressure_correction(uint8_t instance) const { return sensors[instance].p_correction; }
-    
+
     // accumulate a reading on sensors. Some backends without their
     // own thread or a timer may need this.
     void accumulate(void);
@@ -185,11 +189,11 @@ public:
     HAL_Semaphore &get_semaphore(void) {
         return _rsem;
     }
-    
+
 private:
     // singleton
     static AP_Baro *_singleton;
-    
+
     // how many drivers do we have?
     uint8_t _num_drivers;
     AP_Baro_Backend *drivers[BARO_MAX_DRIVERS];
@@ -216,7 +220,7 @@ private:
         PROBE_MS5837=(1<<9),
         PROBE_BMP388=(1<<10),
     };
-    
+
     struct sensor {
         uint32_t last_update_ms;        // last update time in ms
         uint32_t last_change_ms;        // last update time in ms that included a change in reading from previous readings
